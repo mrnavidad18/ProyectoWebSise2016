@@ -1,0 +1,73 @@
+﻿@model IEnumerable<ProyectoMiniMarket.productos>
+
+@{
+    ViewBag.Title = "Lista";
+    var user = Session["usuario"] as usuario; ;
+}
+
+<h2>Lista</h2>
+
+@if (ViewData["Message2"] != null)
+{
+    <script language="javascript">
+        alert('@ViewData["Message2"]');
+    </script>
+}
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+@if (user != null)
+{
+    <h2>BIENVENIDO(A) @user.nombre </h2>
+    @Html.ActionLink("desconectar", "desconectar", "Usuario");
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.nombreProducto)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.precioUnidad)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.stock)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.estado)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.categorias.nombrecategoria)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.nombreProducto)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.precioUnidad)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.stock)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.estado)
+        </td>
+
+      
+
+        <td>
+            @Html.DisplayFor(modelItem => item.categorias.nombrecategoria)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.idproducto }) |
+            @Html.ActionLink("Details", "Details", new { id=item.idproducto }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.idproducto })
+        </td>
+    </tr>
+}
+
+</table>

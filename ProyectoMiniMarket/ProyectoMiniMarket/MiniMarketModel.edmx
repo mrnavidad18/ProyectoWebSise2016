@@ -1,0 +1,463 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="minimarketDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="categorias">
+          <Key>
+            <PropertyRef Name="idcategoria" />
+          </Key>
+          <Property Name="idcategoria" Type="int" Nullable="false" />
+          <Property Name="nombrecategoria" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="descripcion" Type="text" />
+        </EntityType>
+        <EntityType Name="clientes">
+          <Key>
+            <PropertyRef Name="idCliente" />
+          </Key>
+          <Property Name="idCliente" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="NombreCliente" Type="varchar" MaxLength="100" />
+          <Property Name="Direccion" Type="varchar" MaxLength="100" />
+          <Property Name="Ciudad" Type="varchar" MaxLength="100" />
+          <Property Name="Telefono" Type="varchar" MaxLength="30" />
+          <Property Name="estado" Type="bit" />
+        </EntityType>
+        <EntityType Name="detallesdeVentas">
+          <Key>
+            <PropertyRef Name="idventas" />
+            <PropertyRef Name="idproducto" />
+          </Key>
+          <Property Name="idventas" Type="int" Nullable="false" />
+          <Property Name="idproducto" Type="int" Nullable="false" />
+          <Property Name="preciounidad" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="cantidad" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Empleados">
+          <Key>
+            <PropertyRef Name="IdEmpleado" />
+          </Key>
+          <Property Name="IdEmpleado" Type="int" Nullable="false" />
+          <Property Name="Apellidos" Type="varchar" MaxLength="20" />
+          <Property Name="Nombre" Type="varchar" MaxLength="20" />
+          <Property Name="cargo" Type="varchar" MaxLength="40" />
+          <Property Name="FechaNacimiento" Type="date" />
+          <Property Name="FechaContratacion" Type="date" />
+          <Property Name="direccion" Type="varchar" MaxLength="60" />
+          <Property Name="ciudad" Type="varchar" MaxLength="15" />
+          <Property Name="TelDomicilio" Type="varchar" MaxLength="24" />
+          <Property Name="sueldoBasico" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="estado" Type="bit" />
+        </EntityType>
+        <EntityType Name="productos">
+          <Key>
+            <PropertyRef Name="idproducto" />
+          </Key>
+          <Property Name="idproducto" Type="int" Nullable="false" />
+          <Property Name="nombreProducto" Type="varchar" MaxLength="40" />
+          <Property Name="idCategoria" Type="int" />
+          <Property Name="precioUnidad" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="stock" Type="int" />
+          <Property Name="estado" Type="bit" />
+        </EntityType>
+        <EntityType Name="usuario">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="pwd" Type="varchar" MaxLength="25" />
+          <Property Name="nombre" Type="varchar" MaxLength="25" />
+          <Property Name="intentos" Type="int" />
+          <Property Name="estado" Type="bit" />
+          <Property Name="tipoUsuario" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="Ventas">
+          <Key>
+            <PropertyRef Name="IdVentas" />
+          </Key>
+          <Property Name="IdVentas" Type="int" Nullable="false" />
+          <Property Name="IdCliente" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="IdEmpleado" Type="int" Nullable="false" />
+          <Property Name="FechaVenta" Type="date" />
+        </EntityType>
+        <Association Name="fk_1">
+          <End Role="Ventas" Type="Self.Ventas" Multiplicity="1" />
+          <End Role="detallesdeVentas" Type="Self.detallesdeVentas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ventas">
+              <PropertyRef Name="IdVentas" />
+            </Principal>
+            <Dependent Role="detallesdeVentas">
+              <PropertyRef Name="idventas" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_2">
+          <End Role="productos" Type="Self.productos" Multiplicity="1" />
+          <End Role="detallesdeVentas" Type="Self.detallesdeVentas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="productos">
+              <PropertyRef Name="idproducto" />
+            </Principal>
+            <Dependent Role="detallesdeVentas">
+              <PropertyRef Name="idproducto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_4">
+          <End Role="clientes" Type="Self.clientes" Multiplicity="1" />
+          <End Role="Ventas" Type="Self.Ventas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="clientes">
+              <PropertyRef Name="idCliente" />
+            </Principal>
+            <Dependent Role="Ventas">
+              <PropertyRef Name="IdCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_5">
+          <End Role="Empleados" Type="Self.Empleados" Multiplicity="1" />
+          <End Role="Ventas" Type="Self.Ventas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empleados">
+              <PropertyRef Name="IdEmpleado" />
+            </Principal>
+            <Dependent Role="Ventas">
+              <PropertyRef Name="IdEmpleado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_6">
+          <End Role="categorias" Type="Self.categorias" Multiplicity="0..1" />
+          <End Role="productos" Type="Self.productos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="categorias">
+              <PropertyRef Name="idcategoria" />
+            </Principal>
+            <Dependent Role="productos">
+              <PropertyRef Name="idCategoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="minimarketDBModelStoreContainer">
+          <EntitySet Name="categorias" EntityType="Self.categorias" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="clientes" EntityType="Self.clientes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="detallesdeVentas" EntityType="Self.detallesdeVentas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Empleados" EntityType="Self.Empleados" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="productos" EntityType="Self.productos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="usuario" EntityType="Self.usuario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ventas" EntityType="Self.Ventas" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fk_1" Association="Self.fk_1">
+            <End Role="Ventas" EntitySet="Ventas" />
+            <End Role="detallesdeVentas" EntitySet="detallesdeVentas" />
+          </AssociationSet>
+          <AssociationSet Name="fk_2" Association="Self.fk_2">
+            <End Role="productos" EntitySet="productos" />
+            <End Role="detallesdeVentas" EntitySet="detallesdeVentas" />
+          </AssociationSet>
+          <AssociationSet Name="fk_4" Association="Self.fk_4">
+            <End Role="clientes" EntitySet="clientes" />
+            <End Role="Ventas" EntitySet="Ventas" />
+          </AssociationSet>
+          <AssociationSet Name="fk_5" Association="Self.fk_5">
+            <End Role="Empleados" EntitySet="Empleados" />
+            <End Role="Ventas" EntitySet="Ventas" />
+          </AssociationSet>
+          <AssociationSet Name="fk_6" Association="Self.fk_6">
+            <End Role="categorias" EntitySet="categorias" />
+            <End Role="productos" EntitySet="productos" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="minimarketDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="categorias">
+          <Key>
+            <PropertyRef Name="idcategoria" />
+          </Key>
+          <Property Name="idcategoria" Type="Int32" Nullable="false" />
+          <Property Name="nombrecategoria" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="productos" Relationship="Self.fk_6" FromRole="categorias" ToRole="productos" />
+        </EntityType>
+        <EntityType Name="clientes">
+          <Key>
+            <PropertyRef Name="idCliente" />
+          </Key>
+          <Property Name="idCliente" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NombreCliente" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Direccion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Ciudad" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Telefono" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="estado" Type="Boolean" />
+          <NavigationProperty Name="Ventas" Relationship="Self.fk_4" FromRole="clientes" ToRole="Ventas" />
+        </EntityType>
+        <EntityType Name="detallesdeVentas">
+          <Key>
+            <PropertyRef Name="idventas" />
+            <PropertyRef Name="idproducto" />
+          </Key>
+          <Property Name="idventas" Type="Int32" Nullable="false" />
+          <Property Name="idproducto" Type="Int32" Nullable="false" />
+          <Property Name="preciounidad" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="cantidad" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Ventas" Relationship="Self.fk_1" FromRole="detallesdeVentas" ToRole="Ventas" />
+          <NavigationProperty Name="productos" Relationship="Self.fk_2" FromRole="detallesdeVentas" ToRole="productos" />
+        </EntityType>
+        <EntityType Name="Empleados">
+          <Key>
+            <PropertyRef Name="IdEmpleado" />
+          </Key>
+          <Property Name="IdEmpleado" Type="Int32" Nullable="false" />
+          <Property Name="Apellidos" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Nombre" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="cargo" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="FechaNacimiento" Type="DateTime" Precision="0" />
+          <Property Name="FechaContratacion" Type="DateTime" Precision="0" />
+          <Property Name="direccion" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="ciudad" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="TelDomicilio" Type="String" MaxLength="24" FixedLength="false" Unicode="false" />
+          <Property Name="sueldoBasico" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="estado" Type="Boolean" />
+          <NavigationProperty Name="Ventas" Relationship="Self.fk_5" FromRole="Empleados" ToRole="Ventas" />
+        </EntityType>
+        <EntityType Name="productos">
+          <Key>
+            <PropertyRef Name="idproducto" />
+          </Key>
+          <Property Name="idproducto" Type="Int32" Nullable="false" />
+          <Property Name="nombreProducto" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="idCategoria" Type="Int32" />
+          <Property Name="precioUnidad" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="stock" Type="Int32" />
+          <Property Name="estado" Type="Boolean" />
+          <NavigationProperty Name="categorias" Relationship="Self.fk_6" FromRole="productos" ToRole="categorias" />
+          <NavigationProperty Name="detallesdeVentas" Relationship="Self.fk_2" FromRole="productos" ToRole="detallesdeVentas" />
+        </EntityType>
+        <EntityType Name="usuario">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="pwd" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="nombre" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="intentos" Type="Int32" />
+          <Property Name="estado" Type="Boolean" />
+          <Property Name="tipoUsuario" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Ventas">
+          <Key>
+            <PropertyRef Name="IdVentas" />
+          </Key>
+          <Property Name="IdVentas" Type="Int32" Nullable="false" />
+          <Property Name="IdCliente" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdEmpleado" Type="Int32" Nullable="false" />
+          <Property Name="FechaVenta" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="clientes" Relationship="Self.fk_4" FromRole="Ventas" ToRole="clientes" />
+          <NavigationProperty Name="detallesdeVentas" Relationship="Self.fk_1" FromRole="Ventas" ToRole="detallesdeVentas" />
+          <NavigationProperty Name="Empleados" Relationship="Self.fk_5" FromRole="Ventas" ToRole="Empleados" />
+        </EntityType>
+        <Association Name="fk_6">
+          <End Role="categorias" Type="Self.categorias" Multiplicity="0..1" />
+          <End Role="productos" Type="Self.productos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="categorias">
+              <PropertyRef Name="idcategoria" />
+            </Principal>
+            <Dependent Role="productos">
+              <PropertyRef Name="idCategoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_4">
+          <End Role="clientes" Type="Self.clientes" Multiplicity="1" />
+          <End Role="Ventas" Type="Self.Ventas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="clientes">
+              <PropertyRef Name="idCliente" />
+            </Principal>
+            <Dependent Role="Ventas">
+              <PropertyRef Name="IdCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_1">
+          <End Role="Ventas" Type="Self.Ventas" Multiplicity="1" />
+          <End Role="detallesdeVentas" Type="Self.detallesdeVentas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ventas">
+              <PropertyRef Name="IdVentas" />
+            </Principal>
+            <Dependent Role="detallesdeVentas">
+              <PropertyRef Name="idventas" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_2">
+          <End Role="productos" Type="Self.productos" Multiplicity="1" />
+          <End Role="detallesdeVentas" Type="Self.detallesdeVentas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="productos">
+              <PropertyRef Name="idproducto" />
+            </Principal>
+            <Dependent Role="detallesdeVentas">
+              <PropertyRef Name="idproducto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_5">
+          <End Role="Empleados" Type="Self.Empleados" Multiplicity="1" />
+          <End Role="Ventas" Type="Self.Ventas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empleados">
+              <PropertyRef Name="IdEmpleado" />
+            </Principal>
+            <Dependent Role="Ventas">
+              <PropertyRef Name="IdEmpleado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="minimarketDBEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="categorias" EntityType="Self.categorias" />
+          <EntitySet Name="clientes" EntityType="Self.clientes" />
+          <EntitySet Name="detallesdeVentas" EntityType="Self.detallesdeVentas" />
+          <EntitySet Name="Empleados" EntityType="Self.Empleados" />
+          <EntitySet Name="productos" EntityType="Self.productos" />
+          <EntitySet Name="usuario" EntityType="Self.usuario" />
+          <EntitySet Name="Ventas" EntityType="Self.Ventas" />
+          <AssociationSet Name="fk_6" Association="Self.fk_6">
+            <End Role="categorias" EntitySet="categorias" />
+            <End Role="productos" EntitySet="productos" />
+          </AssociationSet>
+          <AssociationSet Name="fk_4" Association="Self.fk_4">
+            <End Role="clientes" EntitySet="clientes" />
+            <End Role="Ventas" EntitySet="Ventas" />
+          </AssociationSet>
+          <AssociationSet Name="fk_1" Association="Self.fk_1">
+            <End Role="Ventas" EntitySet="Ventas" />
+            <End Role="detallesdeVentas" EntitySet="detallesdeVentas" />
+          </AssociationSet>
+          <AssociationSet Name="fk_2" Association="Self.fk_2">
+            <End Role="productos" EntitySet="productos" />
+            <End Role="detallesdeVentas" EntitySet="detallesdeVentas" />
+          </AssociationSet>
+          <AssociationSet Name="fk_5" Association="Self.fk_5">
+            <End Role="Empleados" EntitySet="Empleados" />
+            <End Role="Ventas" EntitySet="Ventas" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="minimarketDBModelStoreContainer" CdmEntityContainer="minimarketDBEntities1">
+          <EntitySetMapping Name="categorias">
+            <EntityTypeMapping TypeName="minimarketDBModel.categorias">
+              <MappingFragment StoreEntitySet="categorias">
+                <ScalarProperty Name="idcategoria" ColumnName="idcategoria" />
+                <ScalarProperty Name="nombrecategoria" ColumnName="nombrecategoria" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="clientes">
+            <EntityTypeMapping TypeName="minimarketDBModel.clientes">
+              <MappingFragment StoreEntitySet="clientes">
+                <ScalarProperty Name="idCliente" ColumnName="idCliente" />
+                <ScalarProperty Name="NombreCliente" ColumnName="NombreCliente" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Ciudad" ColumnName="Ciudad" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="detallesdeVentas">
+            <EntityTypeMapping TypeName="minimarketDBModel.detallesdeVentas">
+              <MappingFragment StoreEntitySet="detallesdeVentas">
+                <ScalarProperty Name="idventas" ColumnName="idventas" />
+                <ScalarProperty Name="idproducto" ColumnName="idproducto" />
+                <ScalarProperty Name="preciounidad" ColumnName="preciounidad" />
+                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Empleados">
+            <EntityTypeMapping TypeName="minimarketDBModel.Empleados">
+              <MappingFragment StoreEntitySet="Empleados">
+                <ScalarProperty Name="IdEmpleado" ColumnName="IdEmpleado" />
+                <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="cargo" ColumnName="cargo" />
+                <ScalarProperty Name="FechaNacimiento" ColumnName="FechaNacimiento" />
+                <ScalarProperty Name="FechaContratacion" ColumnName="FechaContratacion" />
+                <ScalarProperty Name="direccion" ColumnName="direccion" />
+                <ScalarProperty Name="ciudad" ColumnName="ciudad" />
+                <ScalarProperty Name="TelDomicilio" ColumnName="TelDomicilio" />
+                <ScalarProperty Name="sueldoBasico" ColumnName="sueldoBasico" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="productos">
+            <EntityTypeMapping TypeName="minimarketDBModel.productos">
+              <MappingFragment StoreEntitySet="productos">
+                <ScalarProperty Name="idproducto" ColumnName="idproducto" />
+                <ScalarProperty Name="nombreProducto" ColumnName="nombreProducto" />
+                <ScalarProperty Name="idCategoria" ColumnName="idCategoria" />
+                <ScalarProperty Name="precioUnidad" ColumnName="precioUnidad" />
+                <ScalarProperty Name="stock" ColumnName="stock" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="usuario">
+            <EntityTypeMapping TypeName="minimarketDBModel.usuario">
+              <MappingFragment StoreEntitySet="usuario">
+                <ScalarProperty Name="tipoUsuario" ColumnName="tipoUsuario" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="pwd" ColumnName="pwd" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="intentos" ColumnName="intentos" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ventas">
+            <EntityTypeMapping TypeName="minimarketDBModel.Ventas">
+              <MappingFragment StoreEntitySet="Ventas">
+                <ScalarProperty Name="IdVentas" ColumnName="IdVentas" />
+                <ScalarProperty Name="IdCliente" ColumnName="IdCliente" />
+                <ScalarProperty Name="IdEmpleado" ColumnName="IdEmpleado" />
+                <ScalarProperty Name="FechaVenta" ColumnName="FechaVenta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

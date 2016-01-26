@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="minimarketDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="categorias">
+    <Key>
+      <PropertyRef Name="idcategoria" />
+    </Key>
+    <Property Name="idcategoria" Type="int" Nullable="false" />
+    <Property Name="nombrecategoria" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="descripcion" Type="text" />
+  </EntityType>
+  <EntityType Name="clientes">
+    <Key>
+      <PropertyRef Name="idCliente" />
+    </Key>
+    <Property Name="idCliente" Type="varchar" MaxLength="8" Nullable="false" />
+    <Property Name="NombreCliente" Type="varchar" MaxLength="100" />
+    <Property Name="Direccion" Type="varchar" MaxLength="100" />
+    <Property Name="Ciudad" Type="varchar" MaxLength="100" />
+    <Property Name="Telefono" Type="varchar" MaxLength="30" />
+    <Property Name="estado" Type="bit" />
+  </EntityType>
+  <EntityType Name="detallesdeVentas">
+    <Key>
+      <PropertyRef Name="idventas" />
+      <PropertyRef Name="idproducto" />
+    </Key>
+    <Property Name="idventas" Type="int" Nullable="false" />
+    <Property Name="idproducto" Type="int" Nullable="false" />
+    <Property Name="preciounidad" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="cantidad" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Empleados">
+    <Key>
+      <PropertyRef Name="IdEmpleado" />
+    </Key>
+    <Property Name="IdEmpleado" Type="int" Nullable="false" />
+    <Property Name="Apellidos" Type="varchar" MaxLength="20" />
+    <Property Name="Nombre" Type="varchar" MaxLength="20" />
+    <Property Name="cargo" Type="varchar" MaxLength="40" />
+    <Property Name="FechaNacimiento" Type="date" />
+    <Property Name="FechaContratacion" Type="date" />
+    <Property Name="direccion" Type="varchar" MaxLength="60" />
+    <Property Name="ciudad" Type="varchar" MaxLength="15" />
+    <Property Name="TelDomicilio" Type="varchar" MaxLength="24" />
+    <Property Name="sueldoBasico" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="estado" Type="bit" />
+  </EntityType>
+  <EntityType Name="productos">
+    <Key>
+      <PropertyRef Name="idproducto" />
+    </Key>
+    <Property Name="idproducto" Type="int" Nullable="false" />
+    <Property Name="nombreProducto" Type="varchar" MaxLength="40" />
+    <Property Name="idCategoria" Type="int" />
+    <Property Name="precioUnidad" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="stock" Type="int" />
+    <Property Name="estado" Type="bit" />
+  </EntityType>
+  <EntityType Name="usuario">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="varchar" MaxLength="25" Nullable="false" />
+    <Property Name="pwd" Type="varchar" MaxLength="25" />
+    <Property Name="nombre" Type="varchar" MaxLength="25" />
+    <Property Name="intentos" Type="int" />
+    <Property Name="estado" Type="bit" />
+    <Property Name="tipoUsuario" Type="char" MaxLength="1" />
+  </EntityType>
+  <EntityType Name="Ventas">
+    <Key>
+      <PropertyRef Name="IdVentas" />
+    </Key>
+    <Property Name="IdVentas" Type="int" Nullable="false" />
+    <Property Name="IdCliente" Type="varchar" MaxLength="8" Nullable="false" />
+    <Property Name="IdEmpleado" Type="int" Nullable="false" />
+    <Property Name="FechaVenta" Type="date" />
+  </EntityType>
+  <Association Name="fk_1">
+    <End Role="Ventas" Type="Self.Ventas" Multiplicity="1" />
+    <End Role="detallesdeVentas" Type="Self.detallesdeVentas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ventas">
+        <PropertyRef Name="IdVentas" />
+      </Principal>
+      <Dependent Role="detallesdeVentas">
+        <PropertyRef Name="idventas" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_2">
+    <End Role="productos" Type="Self.productos" Multiplicity="1" />
+    <End Role="detallesdeVentas" Type="Self.detallesdeVentas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="productos">
+        <PropertyRef Name="idproducto" />
+      </Principal>
+      <Dependent Role="detallesdeVentas">
+        <PropertyRef Name="idproducto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_4">
+    <End Role="clientes" Type="Self.clientes" Multiplicity="1" />
+    <End Role="Ventas" Type="Self.Ventas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="clientes">
+        <PropertyRef Name="idCliente" />
+      </Principal>
+      <Dependent Role="Ventas">
+        <PropertyRef Name="IdCliente" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_5">
+    <End Role="Empleados" Type="Self.Empleados" Multiplicity="1" />
+    <End Role="Ventas" Type="Self.Ventas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Empleados">
+        <PropertyRef Name="IdEmpleado" />
+      </Principal>
+      <Dependent Role="Ventas">
+        <PropertyRef Name="IdEmpleado" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_6">
+    <End Role="categorias" Type="Self.categorias" Multiplicity="0..1" />
+    <End Role="productos" Type="Self.productos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="categorias">
+        <PropertyRef Name="idcategoria" />
+      </Principal>
+      <Dependent Role="productos">
+        <PropertyRef Name="idCategoria" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="minimarketDBModelStoreContainer">
+    <EntitySet Name="categorias" EntityType="Self.categorias" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="clientes" EntityType="Self.clientes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="detallesdeVentas" EntityType="Self.detallesdeVentas" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Empleados" EntityType="Self.Empleados" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="productos" EntityType="Self.productos" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="usuario" EntityType="Self.usuario" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Ventas" EntityType="Self.Ventas" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="fk_1" Association="Self.fk_1">
+      <End Role="Ventas" EntitySet="Ventas" />
+      <End Role="detallesdeVentas" EntitySet="detallesdeVentas" />
+    </AssociationSet>
+    <AssociationSet Name="fk_2" Association="Self.fk_2">
+      <End Role="productos" EntitySet="productos" />
+      <End Role="detallesdeVentas" EntitySet="detallesdeVentas" />
+    </AssociationSet>
+    <AssociationSet Name="fk_4" Association="Self.fk_4">
+      <End Role="clientes" EntitySet="clientes" />
+      <End Role="Ventas" EntitySet="Ventas" />
+    </AssociationSet>
+    <AssociationSet Name="fk_5" Association="Self.fk_5">
+      <End Role="Empleados" EntitySet="Empleados" />
+      <End Role="Ventas" EntitySet="Ventas" />
+    </AssociationSet>
+    <AssociationSet Name="fk_6" Association="Self.fk_6">
+      <End Role="categorias" EntitySet="categorias" />
+      <End Role="productos" EntitySet="productos" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
