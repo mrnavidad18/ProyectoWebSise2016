@@ -2,17 +2,23 @@
 
 @{
     ViewBag.Title = "Lista";
-    var user = Session["usuario"];
+    var user = Session["usuario"] as usuario; ;
 }
 
 <h2>Lista</h2>
 
+@if (ViewData["Message2"] != null)
+{
+    <script language="javascript">
+        alert('@ViewData["Message2"]');
+    </script>
+}
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
 @if (user != null)
 {
-    <h2>BIENVENIDO(A) @user </h2>
+    <h2>BIENVENIDO(A) @user.nombre </h2>
     @Html.ActionLink("desconectar", "desconectar", "Usuario");
 }
 

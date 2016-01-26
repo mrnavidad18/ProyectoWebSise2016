@@ -19,5 +19,6 @@ namespace ProyectoMiniMarket
         public string nombre { get; set; }
         public Nullable<int> intentos { get; set; }
         public Nullable<bool> estado { get; set; }
+        public string tipoUsuario { get; set; }
     }
 }

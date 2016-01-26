@@ -65,6 +65,7 @@
     <Property Name="nombre" Type="varchar" MaxLength="25" />
     <Property Name="intentos" Type="int" />
     <Property Name="estado" Type="bit" />
+    <Property Name="tipoUsuario" Type="char" MaxLength="1" />
   </EntityType>
   <EntityType Name="Ventas">
     <Key>

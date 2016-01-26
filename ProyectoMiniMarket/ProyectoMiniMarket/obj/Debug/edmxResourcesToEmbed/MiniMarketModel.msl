@@ -64,6 +64,7 @@
     <EntitySetMapping Name="usuario">
       <EntityTypeMapping TypeName="minimarketDBModel.usuario">
         <MappingFragment StoreEntitySet="usuario">
+          <ScalarProperty Name="tipoUsuario" ColumnName="tipoUsuario" />
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="pwd" ColumnName="pwd" />
           <ScalarProperty Name="nombre" ColumnName="nombre" />
