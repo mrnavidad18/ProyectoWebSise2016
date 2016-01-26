@@ -1,0 +1,33 @@
+﻿@model ProyectoMiniMarket.usuario
+
+@{
+    ViewBag.Title = "Index";
+  
+}
+
+<h2>Index</h2>
+@if (ViewData["Message"] != null)
+{
+    <script language="javascript">
+    alert('@ViewData["Message"]');
+    </script>
+}
+
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-md-6">
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <input type="text" class="form-control" placeholder="INGRESE EL USER" id="idusuario" name="idusuario" />
+                    <input type="password" class="form-control" placeholder="INGRESE SU PASSWORD" id="passwordusuario" name="passwordusuario" />
+                    <button class="btn btn-danger" type="submit">
+                        <span class="glyphicon glyphicon-fire" aria-hidden="true" />
+                    </button>
+                </span>
+            </div>
+        </div>
+    </div>
+
+}
